@@ -237,7 +237,7 @@ function updateChart(graphData) {
 
 function populateTable(graphData) {
     const tbody = document.getElementById('investmentTable').getElementsByTagName('tbody')[0];
-    tbody.innerHTML = ''; // Clear existing rows
+    tbody.innerHTML = '';
 
     graphData.forEach((data) => {
         const row = tbody.insertRow();
@@ -255,7 +255,7 @@ document.getElementById('toggleTable').addEventListener('click', function() {
         this.textContent = 'Hide Investment Details in Table';
     } else {
         tableContainer.style.display = 'none';
-        this.textContent = 'Show Investment Details';
+        this.textContent = 'Show Investment Details in Table';
     }
 });
 
