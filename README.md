@@ -1,4 +1,6 @@
 # ASB & ASM Investment Calculator
+![Preview](https://github.com/user-attachments/assets/d903475f-3222-45bb-b504-6512c651fa88)
+https://welsonliong.github.io/ASB-ASM-Investment-Calculator/
 
 Calculate your ASB & ASM investment returns with this easy-to-use calculator.
 
