@@ -68,6 +68,7 @@ body {
     border: none;
     transition: background-color 0.3s;
     z-index: 1000;
+    -webkit-tap-highlight-color: transparent;
 }
 
 [data-theme="dark"] .theme-toggle {
