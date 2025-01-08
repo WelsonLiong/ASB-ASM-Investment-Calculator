@@ -259,6 +259,27 @@ button:hover {
     }
 }
 
+#tableContainer {
+    margin-top: 1rem;
+}
+
+#investmentTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+#investmentTable th, #investmentTable td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+#investmentTable th {
+    background-color: var(--card-bg);
+    color: var(--text-secondary);
+}
+
 .footer {
     margin-top: 3rem;
     padding: 2rem 0;

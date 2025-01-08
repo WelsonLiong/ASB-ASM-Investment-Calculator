@@ -235,6 +235,30 @@ function updateChart(graphData) {
     });
 }
 
+function populateTable(graphData) {
+    const tbody = document.getElementById('investmentTable').getElementsByTagName('tbody')[0];
+    tbody.innerHTML = ''; // Clear existing rows
+
+    graphData.forEach((data) => {
+        const row = tbody.insertRow();
+        row.insertCell(0).textContent = data.year; // Year
+        row.insertCell(1).textContent = data.principal.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Principal
+        row.insertCell(2).textContent = data.cumulativeDividend.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Cumulative Dividend
+        row.insertCell(3).textContent = data.totalValue.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Total Investment Value
+    });
+}
+
+document.getElementById('toggleTable').addEventListener('click', function() {
+    const tableContainer = document.getElementById('tableContainer');
+    if (tableContainer.style.display === 'none') {
+        tableContainer.style.display = 'block';
+        this.textContent = 'Hide Investment Details in Table';
+    } else {
+        tableContainer.style.display = 'none';
+        this.textContent = 'Show Investment Details';
+    }
+});
+
 document.getElementById('calculatorForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -256,4 +280,5 @@ document.getElementById('calculatorForm').addEventListener('submit', function(e)
         `RM ${results.totalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
     updateChart(results.graphData);
+    populateTable(results.graphData);
 });
