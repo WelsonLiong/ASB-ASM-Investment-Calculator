@@ -1,5 +1,8 @@
 let chart = null;
 
+<script data-goatcounter="https://welsonliong.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
 function toggleTheme() {
     const html = document.documentElement;
     const currentTheme = html.getAttribute('data-theme');
