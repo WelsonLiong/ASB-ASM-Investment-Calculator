@@ -272,6 +272,36 @@ document.getElementById('calculatorForm').addEventListener('submit', function(e)
         values.period
     );
 
+    document.getElementById('resetButton').addEventListener('click', function() {
+        // Clear all input fields
+        document.getElementById('initialInvestment').value = '';
+        document.getElementById('monthlyContribution').value = '';
+        document.getElementById('dividend').value = '';
+        document.getElementById('period').value = '';
+        
+        // Reset error messages
+        document.querySelectorAll('.error').forEach(el => el.textContent = '');
+        
+        // Reset results display
+        document.getElementById('totalPrincipal').textContent = 'RM 0.00';
+        document.getElementById('totalInterest').textContent = 'RM 0.00';
+        document.getElementById('totalValue').textContent = 'RM 0.00';
+        
+        // Destroy the chart if it exists
+        if (chart) {
+            chart.destroy();
+            chart = null; // Clear the chart variable
+        }
+        
+        // Hide the table and reset the toggle button text
+        document.getElementById('tableContainer').style.display = 'none';
+        document.getElementById('toggleTable').textContent = 'Show Investment Details in Table';
+        
+        // Clear the table data
+        const tbody = document.getElementById('investmentTable').getElementsByTagName('tbody')[0];
+        tbody.innerHTML = '';
+    });
+
     document.getElementById('totalPrincipal').textContent = 
         `RM ${results.totalPrincipal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     document.getElementById('totalInterest').textContent = 
