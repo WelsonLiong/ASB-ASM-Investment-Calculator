@@ -58,7 +58,7 @@ body {
     display: flex;
     gap: 0.5rem;
     align-items: center;
-    margin-right: 1rem; /* Adjust spacing as needed */
+    margin-right: 1rem;
 }
 
 .language-option {
@@ -221,17 +221,17 @@ input:focus {
     margin-top: 0.25rem;
 }
 
-/* Calculate button styles */
 .calculate-btn {
-    flex: 1; /* Distribute available space equally */
+    flex: 1;
     justify-content: center;
-    background-color: #38a169; /* Green color */
+    background-color: #38a169;
     color: var(--bg-secondary);
-    padding: 0.75rem 1.5rem;
+    padding: 0.7rem 0.7rem;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-weight: 500;
+    font-size: 0.7rem;
     width: auto;
     transition: background-color 0.2s;
     display: flex;
@@ -244,19 +244,19 @@ input:focus {
     opacity: 0.9;
 }
 
-/* Reset button styles */
 .reset-btn {
     flex: 1;
     display: flex;
     align-items: center;
-    justify-content: center; /* Center the icon and text */
-    background-color: var(--accent); /* Original blue color */
+    justify-content: center;
+    background-color: var(--accent);
     color: var(--bg-secondary);
-    padding: 0.75rem 1.5rem;
+    padding: 0.7rem 0.7rem;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-weight: 500;
+    font-size: 0.7rem;
     width: auto;
     transition: background-color 0.2s;
     display: flex;
@@ -321,41 +321,43 @@ button:hover {
     height: 300px;
 }
 
+/* For smaller screens */
 @media (max-width: 768px) {
     .container {
-        padding: 1rem; /* Reduce padding on smaller screens */
+        padding: 1rem;
     }
 
     .calculator-grid {
         grid-template-columns: 1fr;
-        gap: 1rem; /* Reduce gap between sections */
+        gap: 1rem;
     }
 
     .input-section, .results-section {
-        padding: 1rem; /* Reduce padding inside sections */
+        padding: 1rem;
     }
 
     .header {
-        margin-bottom: 1rem; /* Reduce margin for header */
+        margin-bottom: 1rem;
     }
 
     .result-card {
-        padding: 1rem; /* Reduce padding for result cards */
+        padding: 1rem;
     }
 
     .chart-container {
-        height: 250px; /* Adjust chart height for smaller screens */
+        height: 250px;
     }
 }
 
 #tableContainer {
     margin-top: 1rem;
+    padding-right: 1rem;
 }
 
 #investmentTable {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 #investmentTable th, #investmentTable td {

@@ -6,7 +6,7 @@ const translations = {
         period: "Tempoh Pelaburan (Tahun)",
         calculate: "Kira",
         reset: "Tetapkan Semula",
-        showTable: "Papar Perincian Pelaburan dalam Jadual",
+        showTable: "Paparkan Perincian Pelaburan dalam Jadual",
         showTableHide: "Sembunyikan Perincian Pelaburan dalam Jadual",
         errorInitialInvestment: "Sila masukkan nombor positif yang sah",
         errorMonthlyContribution: "Sila masukkan nombor positif yang sah",
@@ -24,7 +24,9 @@ const translations = {
         tooltipInitialInvestment: "Jumlah yang anda merancang untuk melabur pada mulanya untuk memulakan pelaburan ASNB anda.",
         tooltipMonthlyContribution: "Jumlah tambahan yang anda rancang untuk melabur setiap bulan untuk menambahkan pelaburan anda.",
         tooltipDividend: "Kadar faedah tahunan yang dijangkakan.",
-        tooltipPeriod: "Bilangan tahun anda merancang untuk memegang pelaburan anda. Tempoh yang lebih panjang biasanya menghasilkan pulangan yang lebih baik."
+        tooltipPeriod: "Bilangan tahun anda merancang untuk memegang pelaburan anda. Tempoh yang lebih panjang biasanya menghasilkan pulangan yang lebih baik.",
+        yearlyDividend: "Dividen bagi tahun tersebut (RM)",
+        cumulativeDividend: "Jumlah Dividen (RM)"
 },
 
     en: {
@@ -52,7 +54,9 @@ const translations = {
         tooltipInitialInvestment: "The amount you plan to invest upfront to start your ASNB investment.",
         tooltipMonthlyContribution: "Additional amount you plan to invest each month to grow your investment.",
         tooltipDividend: "Expected annual dividend rate.",
-        tooltipPeriod: "Number of years you plan to hold your investment. Longer periods typically yield better returns."
+        tooltipPeriod: "Number of years you plan to hold your investment. Longer periods typically yield better returns.",
+        yearlyDividend: "Yearly Dividend (RM)",
+        cumulativeDividend: "Cumulative Dividend (RM)"
     }
 };
 
@@ -90,7 +94,7 @@ function applyTranslations(language) {
         chart.data.datasets[2].label = translations[language].datasetDividend;
 
         chart.data.labels = chart.data.labels.map(label => {
-            return label.replace(/Year/g, translations[language].year); // Replace "Year" with translated text
+            return label.replace(/Year/g, translations[language].year);
         });
 
         chart.update();
@@ -384,12 +388,18 @@ function populateTable(graphData) {
     const tbody = document.getElementById('investmentTable').getElementsByTagName('tbody')[0];
     tbody.innerHTML = '';
 
+    let prevCumulativeDividend = 0;
+
     graphData.forEach((data) => {
+        const yearlyDividend = data.cumulativeDividend - prevCumulativeDividend;
+        prevCumulativeDividend = data.cumulativeDividend;
+
         const row = tbody.insertRow();
         row.insertCell(0).textContent = data.year; // Year
         row.insertCell(1).textContent = data.principal.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Principal
-        row.insertCell(2).textContent = data.cumulativeDividend.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Cumulative Dividend
-        row.insertCell(3).textContent = data.totalValue.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Total Investment Value
+        row.insertCell(2).textContent = yearlyDividend.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Yearly Dividend
+        row.insertCell(3).textContent = data.cumulativeDividend.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Cumulative Dividend
+        row.insertCell(4).textContent = data.totalValue.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Total Investment Value
     });
 }
 
