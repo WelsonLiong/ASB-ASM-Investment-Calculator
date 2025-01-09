@@ -49,9 +49,37 @@ body {
 
 .controls {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 1rem;
     margin-bottom: 0.5rem;
+}
+
+.language-toggle {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-right: 1rem; /* Adjust spacing as needed */
+}
+
+.language-option {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.language-option:hover {
+    background-color: var(--accent);
+    color: var(--bg-secondary);
+}
+
+.language-option.active {
+    background-color: var(--accent);
+    color: var(--bg-secondary);
+    font-weight: bold;
 }
 
 .theme-toggle {

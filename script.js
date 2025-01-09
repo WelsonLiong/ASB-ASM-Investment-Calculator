@@ -1,3 +1,149 @@
+const translations = {
+    bm: {
+        initialInvestment: "Pelaburan Permulaan (RM)",
+        monthlyContribution: "Simpanan Bulanan (RM)",
+        dividend: "Kadar Dividen Tahunan (%)",
+        period: "Tempoh Pelaburan (Tahun)",
+        calculate: "Kira",
+        reset: "Tetapkan Semula",
+        showTable: "Papar Perincian Pelaburan dalam Jadual",
+        showTableHide: "Sembunyikan Perincian Pelaburan dalam Jadual",
+        errorInitialInvestment: "Sila masukkan nombor positif yang sah",
+        errorMonthlyContribution: "Sila masukkan nombor positif yang sah",
+        errorDividend: "Sila masukkan peratusan yang sah antara 0 dan 100",
+        errorPeriod: "Sila masukkan tempoh yang sah antara 1 hingga 200 tahun",
+        totalPrincipal: "Jumlah Prinsipal",
+        totalDividend: "Jumlah Dividen",
+        totalValue: "Jumlah Nilai Pelaburan",
+        year: "Tahun",
+        principal: "Prinsipal",
+        dividend: "Dividen",
+        datasetTotalValue: "Jumlah Nilai Pelaburan",
+        datasetPrincipal: "Prinsipal",
+        datasetDividend: "Dividen",
+        tooltipInitialInvestment: "Jumlah yang anda merancang untuk melabur pada mulanya untuk memulakan pelaburan ASNB anda.",
+        tooltipMonthlyContribution: "Jumlah tambahan yang anda rancang untuk melabur setiap bulan untuk menambahkan pelaburan anda.",
+        tooltipDividend: "Kadar faedah tahunan yang dijangkakan.",
+        tooltipPeriod: "Bilangan tahun anda merancang untuk memegang pelaburan anda. Tempoh yang lebih panjang biasanya menghasilkan pulangan yang lebih baik."
+},
+
+    en: {
+        initialInvestment: "Initial Investment (RM)",
+        monthlyContribution: "Monthly Contribution (RM)",
+        dividend: "Annual Dividend Rate (%)",
+        period: "Investment Period (Years)",
+        calculate: "Calculate",
+        reset: "Reset",
+        showTable: "Show Investment Details in Table",
+        showTableHide: "Hide Investment Details in Table",
+        errorInitialInvestment: "Please enter a valid positive number",
+        errorMonthlyContribution: "Please enter a valid positive number",
+        errorDividend: "Please enter a valid percentage between 0 and 100",
+        errorPeriod: "Please enter a valid period between 1 and 200 years",
+        totalPrincipal: "Total Principal",
+        totalDividend: "Total Dividend",
+        totalValue: "Total Investment Value",
+        year: "Year",
+        principal: "Principal",
+        dividend: "Dividend",
+        datasetTotalValue: "Total Investment Value",
+        datasetPrincipal: "Principal",
+        datasetDividend: "Dividend",
+        tooltipInitialInvestment: "The amount you plan to invest upfront to start your ASNB investment.",
+        tooltipMonthlyContribution: "Additional amount you plan to invest each month to grow your investment.",
+        tooltipDividend: "Expected annual dividend rate.",
+        tooltipPeriod: "Number of years you plan to hold your investment. Longer periods typically yield better returns."
+    }
+};
+
+let currentLanguage = 'bm'; // Default language
+
+function applyTranslations(language) {
+    currentLanguage = language;
+    const elements = document.querySelectorAll('[data-translate]');
+    elements.forEach(el => {
+        const key = el.getAttribute('data-translate');
+        if (translations[language][key]) {
+            if (el.tagName.toLowerCase() === 'button' || el.tagName.toLowerCase() === 'label' || el.tagName.toLowerCase() === 'div' || el.tagName.toLowerCase() === 'span' || el.tagName.toLowerCase() === 'th') {
+                el.textContent = translations[language][key];
+            } else if (el.tagName.toLowerCase() === 'input' && el.type === 'button') {
+                el.value = translations[language][key];
+            } else if (el.tagName.toLowerCase() === 'div' && el.classList.contains('disclaimer')) {
+                el.innerHTML = translations[language][key];
+            } else if (el.classList.contains('tooltip')) {
+                el.textContent = translations[language][key];
+            }
+        }
+    });
+
+    const tableContainer = document.getElementById('tableContainer');
+    const toggleTableButton = document.getElementById('toggleTable');
+    if (tableContainer.style.display === 'none') {
+        toggleTableButton.textContent = translations[language].showTable;
+    } else {
+        toggleTableButton.textContent = translations[language].showTableHide;
+    }
+
+    if (chart) {
+        chart.data.datasets[0].label = translations[language].datasetTotalValue;
+        chart.data.datasets[1].label = translations[language].datasetPrincipal;
+        chart.data.datasets[2].label = translations[language].datasetDividend;
+
+        chart.data.labels = chart.data.labels.map(label => {
+            return label.replace(/Year/g, translations[language].year); // Replace "Year" with translated text
+        });
+
+        chart.update();
+    }
+}
+
+function toggleLanguage(language) {
+    const buttons = document.querySelectorAll('.language-option');
+    buttons.forEach(button => {
+        if (button.getAttribute('data-lang') === language) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
+
+    localStorage.setItem('language', language);
+    applyTranslations(language);
+
+    // Re-render the chart if it exists
+    if (chart) {
+        const results = calculateInvestment(
+            parseFloat(document.getElementById('initialInvestment').value || 0),
+            parseFloat(document.getElementById('monthlyContribution').value || 0),
+            parseFloat(document.getElementById('dividend').value || 0),
+            parseFloat(document.getElementById('period').value || 0)
+        );
+        updateChart(results.graphData);
+    }
+}
+
+// Set default language on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const tableContainer = document.getElementById('tableContainer');
+    tableContainer.style.display = 'none';
+
+    const savedLanguage = localStorage.getItem('language') || 'bm'; // Default to BM
+    const buttons = document.querySelectorAll('.language-option');
+    buttons.forEach(button => {
+        if (button.getAttribute('data-lang') === savedLanguage) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
+    applyTranslations(savedLanguage);
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+});
+
 let chart = null;
 
 function toggleTheme() {
@@ -31,7 +177,6 @@ function validateInputs() {
 
     let isValid = true;
 
-    // Reset error messages
     document.querySelectorAll('.error').forEach(el => el.textContent = '');
 
     let initialInvestmentValue = parseFloat(initialInvestment);
@@ -165,24 +310,24 @@ function updateChart(graphData) {
     chart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: graphData.map(d => `Year ${d.year}`),
+            labels: graphData.map(d => `${translations[currentLanguage].year} ${d.year}`), // Translate year label
             datasets: [
                 {
-                    label: 'Total Investment Value',
+                    label: translations[currentLanguage].datasetTotalValue, // Translate dataset label
                     data: graphData.map(d => d.totalValue),
                     borderColor: '#2b6cb0', // Blue
                     backgroundColor: 'rgba(43, 108, 176, 0.1)',
                     fill: true
                 },
                 {
-                    label: 'Principal',
+                    label: translations[currentLanguage].datasetPrincipal, // Translate dataset label
                     data: graphData.map(d => d.principal),
                     borderColor: '#4a5568', // Gray
                     borderDash: [5, 5],
                     fill: false
                 },
                 {
-                    label: 'Dividend',
+                    label: translations[currentLanguage].datasetDividend, // Translate dataset label
                     data: graphData.map(d => d.cumulativeDividend),
                     borderColor: '#38a169', // Green
                     borderDash: [5, 5],
@@ -252,39 +397,36 @@ document.getElementById('toggleTable').addEventListener('click', function() {
     const tableContainer = document.getElementById('tableContainer');
     if (tableContainer.style.display === 'none') {
         tableContainer.style.display = 'block';
-        this.textContent = 'Hide Investment Details in Table';
+        this.textContent = translations[currentLanguage].showTableHide;
     } else {
         tableContainer.style.display = 'none';
-        this.textContent = 'Show Investment Details in Table';
+        this.textContent = translations[currentLanguage].showTable;
     }
 });
 
 document.getElementById('resetButton').addEventListener('click', function() {
-    // Clear all input fields
     document.getElementById('initialInvestment').value = '';
     document.getElementById('monthlyContribution').value = '';
     document.getElementById('dividend').value = '';
     document.getElementById('period').value = '';
     
-    // Reset error messages
     document.querySelectorAll('.error').forEach(el => el.textContent = '');
     
-    // Reset results display
     document.getElementById('totalPrincipal').textContent = 'RM 0.00';
     document.getElementById('totalInterest').textContent = 'RM 0.00';
     document.getElementById('totalValue').textContent = 'RM 0.00';
     
-    // Destroy the chart if it exists
     if (chart) {
         chart.destroy();
-        chart = null; // Clear the chart variable
+        chart = null;
     }
     
-    // Hide the table and reset the toggle button text
-    document.getElementById('tableContainer').style.display = 'none';
-    document.getElementById('toggleTable').textContent = 'Show Investment Details in Table';
+    const tableContainer = document.getElementById('tableContainer');
+    tableContainer.style.display = 'none';
     
-    // Clear the table data
+    const toggleTableButton = document.getElementById('toggleTable');
+    toggleTableButton.textContent = translations[currentLanguage].showTable;
+    
     const tbody = document.getElementById('investmentTable').getElementsByTagName('tbody')[0];
     tbody.innerHTML = '';
 });
@@ -310,5 +452,12 @@ document.getElementById('calculatorForm').addEventListener('submit', function(e)
         `RM ${results.totalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
     updateChart(results.graphData);
+
     populateTable(results.graphData);
+
+    const tableContainer = document.getElementById('tableContainer');
+    if (tableContainer.style.display === 'none') {
+        tableContainer.style.display = 'block';
+        document.getElementById('toggleTable').textContent = translations[currentLanguage].showTableHide;
+    }
 });
